@@ -15,6 +15,22 @@ public class ThreadLocalRemoveTest {
 	private String[] str = {"A", "B", "C", "D"};
 	
 	@Test
+	void threadLocalRemoveX() {
+		ExecutorService executorService = Executors.newFixedThreadPool(2);
+		AtomicInteger index = new AtomicInteger(0);
+		for(int i = 0; i < 4; i++) {
+			int currentIndex = index.getAndIncrement();
+			executorService.submit(() -> {
+				if(threadLocal.get() == null) {
+					threadLocal.set(str[currentIndex]);
+				}
+				log.info("threadLocalRemoveX >> [{}] {}", Thread.currentThread().getName(), threadLocal.get());
+			});
+		}
+		executorService.shutdown();
+	}
+	
+	@Test
 	void threadLocalRemoveO() {
 		ExecutorService executorService = Executors.newFixedThreadPool(2);
 		AtomicInteger index = new AtomicInteger(0);
@@ -24,10 +40,11 @@ public class ThreadLocalRemoveTest {
 				if(threadLocal.get() == null) {
 					threadLocal.set(str[currentIndex]);
 				}
-				log.info("[{}] {}", Thread.currentThread().getName(), threadLocal.get());
-				threadLocal.remove(); // 사용 완료 후 ThreadLocal에 저장된 값 제거
+				log.info("threadLocalRemoveO >> [{}] {}", Thread.currentThread().getName(), threadLocal.get());
+				threadLocal.remove();
 			});
 		}
 		executorService.shutdown();
 	}
+	
 }
