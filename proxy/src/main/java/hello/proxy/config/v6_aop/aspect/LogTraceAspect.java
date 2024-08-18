@@ -23,6 +23,11 @@ public class LogTraceAspect {
 	
 	@Around("execution(* hello.proxy.app..*(..))")
 	public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+		log.info("beanName : {}, target class : {}, bean class : {}"
+				, joinPoint.getSignature().getDeclaringTypeName()
+				, joinPoint.getTarget().getClass()
+				, joinPoint.getThis().getClass());
+		
 		TraceStatus status = null;
         try {
         	String message = joinPoint.getSignature().toShortString();
