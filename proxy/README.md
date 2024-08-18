@@ -14,3 +14,7 @@ Client가 요청한 결과를 Server에 직접 요청하는 것이 아니라 대
 
 #### Proxy 적용 시 중요한 사항
 Spring Container에 실제 객체가 아닌 Proxy 객체를 등록해서 관리해야 하며, Proxy 객체는 내부에서 실제 객체를 참조하고 있어야한다.
+
+---
+
+#### Reflection의 핵심은 META 데이터이다.
